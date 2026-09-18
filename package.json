@@ -25,6 +25,7 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
     "stylelint": "17.15.0",
-    "stylelint-config-standard": "40.0.0"
+    "stylelint-config-standard": "40.0.0",
+    "@adobe/aem-cli": "^16.21.21"
   }
 }
