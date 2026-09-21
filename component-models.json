@@ -20,6 +20,14 @@
         "name": "keywords",
         "multi": true,
         "label": "Keywords"
+      },
+      {
+        "component": "aem-tag",
+        "label": "AEM Tag Picker",
+        "description": "Select an AEM tag",
+        "name": "cq:tags",
+        "valueType": "string",
+        "rootPath": "/content/cq:tags/wknd-shared"
       }
     ]
   },
@@ -142,6 +150,21 @@
     ]
   },
   {
+    "id": "adventure-cf",
+    "fields": [
+      {
+        "component": "aem-content-fragment",
+        "name": "path",
+        "value": "",
+        "label": "Content Fragment path",
+        "variationName": "contentFragmentVariation",
+        "validation": {
+          "rootPath": "/content/dam/wknd-shared/en/adventures"
+        }
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
@@ -211,6 +234,62 @@
         "name": "text",
         "value": "",
         "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "teaser",
+    "fields": [
+      {
+        "component": "select",
+        "name": "classes",
+        "value": "",
+        "label": "Teaser options",
+        "description": "",
+        "valueType": "string",
+        "options": [
+          {
+            "name": "Default",
+            "value": " "
+          },
+          {
+            "name": "Side-by-side",
+            "value": "side-by-side"
+          }
+        ]
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image alt text",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "textContent_text",
+        "label": "Text",
+        "valueType": "string",
+        "required": true
+      },
+      {
+        "component": "aem-content",
+        "name": "textContent_cta",
+        "label": "CTA",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "textContent_ctaText",
+        "label": "CTA label",
         "valueType": "string"
       }
     ]
