@@ -10,7 +10,7 @@
                         "template": {
                             "name": "Adventure CF",
                             "model": "adventure-cf",
-                            "filter": "cf"
+                            "filter": ""
                         }
                     }
                 }
