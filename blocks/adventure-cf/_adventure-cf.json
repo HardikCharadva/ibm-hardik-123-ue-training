@@ -34,5 +34,10 @@
             ]
         }
     ],
-    "filters": []
+    "filters": [
+        {
+            "id": "cf",
+            "components": []
+        }
+    ]
 }
