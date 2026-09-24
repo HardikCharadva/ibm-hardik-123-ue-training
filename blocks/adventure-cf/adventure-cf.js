@@ -4,7 +4,7 @@
  */
 
 // eslint-disable-next-line import/no-unresolved
-import { getAdventureByPath } from '../../scripts/aem-gql-connection.js';
+import { getAEMHost, getAdventureByPath } from '../../scripts/aem-gql-connection.js';
 
 /**
  * Show error state
@@ -28,6 +28,60 @@ function formatLabel(key) {
   return key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
 }
 
+function createDisplay(contentFragment) {
+  const { keys } = contentFragment; // String version of keys in adventureByPath query
+  const { data } = contentFragment;
+
+  let innerHTML = '';
+
+  innerHTML
+  += `<div class="headless-wrapper">
+    <div class="content-fragment-detail">`;
+  // eslint-disable-next-line no-underscore-dangle
+  const cfPrimaryImagePath = data[keys.primaryImage]._path;
+  innerHTML
+        += `<div class="content-fragment-hero">
+            <div class="content-fragment-image">
+                <picture>
+                    <source srcset="${getAEMHost()}${cfPrimaryImagePath}?width=1200&format=webply&optimize=medium" type="image/webp">
+                    <img src="${getAEMHost()}${cfPrimaryImagePath}?width=1200&format=webply&optimize=medium" alt="${data[keys.title]}" loading="lazy" >
+                </picture>
+            </div>
+            <div class="content-fragment-${keys.title}-overlay">
+                <h1 class="content-fragment-${keys.title}" ">${data[keys.title]}</h1>
+            </div>
+        </div>
+        <div class="content-fragment-content">
+            <div class="content-fragment-details-grid">`;
+  const details = [keys.activity, keys.difficulty, keys.tripLength, keys.groupSize, keys.price];
+  details.forEach((detail) => {
+    if (data[detail]) {
+      innerHTML += `<div class="content-fragment-detail-item">
+                        <span class="detail-label">${formatLabel(detail)}</span>
+                        <span class="detail-value">${data[detail]}</span>
+                    </div>`;
+    }
+  });
+  innerHTML
+        += `</div>
+            <div class="content-fragment-${keys.description}">
+                  <h2>About This Adventure</h2>
+                  <div class="content-fragment-${keys.description}-content">
+                      ${data[keys.description].html || data[keys.description].plaintext}
+                  </div>
+              </div>
+              <div class="content-fragment-${keys.itinerary}">
+                  <h2>Itinerary</h2>
+                  <div class="content-fragment-${keys.itinerary}-content">
+                      ${data[keys.itinerary].html || data[keys.itinerary].plaintext}
+                  </div>
+              </div>
+          </div>
+    </div>
+    </div>`;
+  return innerHTML;
+}
+
 /**
  * Main decoration function
  */
@@ -49,19 +103,15 @@ export default async function decorate(block) {
       return;
     }
 
-    // eslint-disable-next-line no-console
-    console.log('Content Fragment:', contentFragment.data); // Retrieves data from the content fragment based on the adventure-by-path query
-    // eslint-disable-next-line no-console
-    console.log('Content Fragment:', contentFragment.keys); // Retrieves keys defined in the adventure-by-path query
-
-    let display = '';
-    Object.keys(contentFragment.data).forEach((key) => {
-      const label = formatLabel(key);
-      const value = contentFragment.data[key];
-      display += `<div> ${label}: ${value} </div>`;
-    });
-
-    block.innerHTML = display;
+    /*
+      Because the content fragment is a reference property,
+        we can rewrite the entire block with the content fragment data
+      Caution with doing this with default content and inferred elements
+        since UE it renders the block with special aue attributes
+      Learn more about inferred elements here:
+        https://www.aem.live/developer/component-model-definitions#creating-semantic-content-models-for-blocks
+      */
+    block.innerHTML = createDisplay(contentFragment);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Content Fragment block error:', error);
