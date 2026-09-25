@@ -1,7 +1,7 @@
 // Dynamic switching for Universal Editor (author) and .aem.page/aem.live (publish)
 function getAEMHost() {
   let host;
-  if (window.location.hostname.endsWith('adobeaemcloud.com')) {
+  if (window.location.hostname.endsWith('.aem.page') || window.location.hostname.endsWith('.aem.live')) {
     host = 'https://author-p34583-e1771246.adobeaemcloud.com';
   } else {
     host = 'https://author-p34583-e1771246.adobeaemcloud.com';
