@@ -1,0 +1,26 @@
+[
+  {
+    "code": "us/en",
+    "country": "us",
+    "lang": "en",
+    "label": "United States (English)",
+    "prefix": "/us/en",
+    "default": true
+  },
+  {
+    "code": "ca/en",
+    "country": "ca",
+    "lang": "en",
+    "label": "Canada (English)",
+    "prefix": "/ca/en",
+    "default": false
+  },
+  {
+    "code": "ca/fr",
+    "country": "ca",
+    "lang": "fr",
+    "label": "Canada (Français)",
+    "prefix": "/ca/fr",
+    "default": false
+  }
+]
