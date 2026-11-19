@@ -1,5 +1,6 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { getLocaleInfo } from '../../scripts/scripts.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -113,10 +114,18 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  // load nav as fragment
+  // load nav as fragment (localized -> root fallback)
+  const { prefix } = getLocaleInfo();
   const navMeta = getMetadata('nav');
-  const navPath = navMeta ? new URL(navMeta, window.location).pathname : '/nav';
-  const fragment = await loadFragment(navPath);
+  let navPath = navMeta ? new URL(navMeta, window.location).pathname : `${prefix}/nav`;
+  let fragment = await loadFragment(navPath);
+
+  if (!fragment && prefix) {
+    navPath = '/nav';
+    fragment = await loadFragment(navPath);
+  }
+
+  if (!fragment) return;
 
   // decorate nav DOM
   block.textContent = '';

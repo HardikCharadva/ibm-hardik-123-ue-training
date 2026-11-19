@@ -50,6 +50,33 @@ async function loadFonts() {
 }
 
 /**
+ * Resolves current locale details from URL path
+ * Example: /ca/fr/page -> { country: 'ca', lang: 'fr', prefix: '/ca/fr' }
+ */
+export function getLocaleInfo(url = window.location.pathname) {
+  const segments = url.split('/').filter(Boolean);
+  if (segments.length >= 2 && /^[a-z]{2}$/i.test(segments[0]) && /^[a-z]{2}$/i.test(segments[1])) {
+    return {
+      country: segments[0].toLowerCase(),
+      lang: segments[1].toLowerCase(),
+      prefix: `/${segments[0].toLowerCase()}/${segments[1].toLowerCase()}`,
+    };
+  }
+  if (segments.length >= 1 && /^[a-z]{2}$/i.test(segments[0])) {
+    return {
+      country: '',
+      lang: segments[0].toLowerCase(),
+      prefix: `/${segments[0].toLowerCase()}`,
+    };
+  }
+  return {
+    country: 'us',
+    lang: 'en',
+    prefix: '',
+  };
+}
+
+/**
  * Turns `/widgets/...` links into widget blocks.
  * @param {Element} main The container element
  */
@@ -160,7 +187,8 @@ export function decorateMain(main) {
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
+  const { lang } = getLocaleInfo();
+  document.documentElement.lang = lang;
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
