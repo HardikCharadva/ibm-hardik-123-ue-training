@@ -8,9 +8,10 @@ indices:
       - '/**'
     exclude:
       - '/**.json'
-      - '/nav'
-      - '/footer'
-      - '/fragments/**'
+      - '/**/nav'
+      - '/**/footer'
+      - '/**/fragments/**'
+      - '/language-masters/**'
     target: /query-index.json
     properties:
       lastModified:
